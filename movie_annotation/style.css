@@ -1,0 +1,14 @@
+h1 {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 30pt;
+	font-weight: bolder;
+}
+
+body {
+    background-color: saddlebrown;
+}
+
+#movie_quotes {
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-size: 30pt;
+}
