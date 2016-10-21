@@ -68,7 +68,7 @@ function render_map()
 function info_window(marker) {
   google.maps.event.addListener(marker, 'click', function() {
     curr_stop = marker.title;
-    infowindow.setContent("<p>" + marker.title + "<br />" + "Train info not loaded, click again" + "</p>");
+    infowindow.setContent("<p>" + "<b>" + curr_stop + "</b>" + "<br />" + "Train info not loaded, click again" + "</p>");
     infowindow.open(map, marker);
     loadJSON();
   });
@@ -180,10 +180,45 @@ function parseJSON() {
     arr_ale.sort(compareNumbers);
     arr_ash.sort(compareNumbers);
     arr_bra.sort(compareNumbers);
-    var train_ale = arr_ale.join(' seconds<br />');
-    var train_ash = arr_ash.join(' seconds<br />');
-    var train_bra = arr_bra.join(' seconds<br />');
-    infowindow.setContent("<p>" + curr_stop + "<br />" + "Next trains to Alewife: " + "<br />" + train_ale + " seconds" + "</p>");
+    sec_to_min(arr_ale);
+    sec_to_min(arr_ash);
+    sec_to_min(arr_bra);
+    var train_ale = arr_ale.join('<br />');
+    train_ale = if_null(train_ale);
+    var train_ash = arr_ash.join('<br />');
+    train_ash = if_null(train_ash);
+    var train_bra = arr_bra.join('<br />');
+    train_bra = if_null(train_bra);
+    infowindow.setContent("<p>" + "<b>" + curr_stop + "</b>" + "<br />" + 
+      "<b>" + "Next trains to Alewife: " + "</b>" + "<br />" + train_ale + "<br />" +
+      "<b>" + "Next trains to Ashmont: " + "</b>" + "<br />" + train_ash + "<br />" +
+      "<b>" + "Next trains to Braintree: " + "</b>" + "<br />" + train_bra + "</p>");
+  }
+}
+
+function sec_to_min(arr) {
+  for (var i = 0; i < arr.length; i++) {
+    var sec = arr[i];
+    var min = Math.floor(sec / 60);
+    sec = sec - min * 60;
+    if (min == 0) {
+      var string = sec + " seconds"
+    } else if (min == 1) {
+      var string = min + " minute " + sec + " seconds "
+    } else {
+      var string = min + " minutes " + sec + " seconds "
+    }
+    arr[i] = string;
+  }
+}
+
+function if_null(train) {
+  if (train == '') {
+    train = 'None. <br />';
+    return train;
+  }
+  else {
+    return train + '<br />';
   }
 }
 
