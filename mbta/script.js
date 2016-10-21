@@ -53,6 +53,25 @@ function renderMap()
   for (var i = 0, feature; feature = features[i]; i++) {
     addMarker(feature);
   }
+
+  var path_b = new google.maps.Polyline({
+  path: line_b,
+  geodesic: true,
+  strokeColor: '#FF0000',
+  strokeOpacity: 1.0,
+  strokeWeight: 2
+  });
+  path_b.setMap(map);
+
+  var path_a = new google.maps.Polyline({
+  path: line_a,
+  geodesic: true,
+  strokeColor: '#FF0000',
+  strokeOpacity: 1.0,
+  strokeWeight: 2
+  });
+  path_a.setMap(map);
+
 }
 
 function info_window(marker) {
@@ -74,72 +93,101 @@ function addMarker(feature) {
   info_window(marker);
 }
 
+var line_b = [
+  {lat: 42.395428, lng: -71.142483},
+  {lat: 42.39674, lng: -71.121815},
+  {lat: 42.3884, lng: -71.11914899999999},
+  {lat: 42.373362, lng: -71.118956},
+  {lat: 42.365486, lng: -71.103802},
+  {lat: 42.36249079, lng: -71.08617653},
+  {lat: 42.361166, lng: -71.070628},
+  {lat: 42.35639457, lng: -71.0624242},
+  {lat: 42.355518, lng: -71.060225},
+  {lat: 42.352271, lng: -71.05524200000001},
+  {lat: 42.342622, lng: -71.056967},
+  {lat: 42.330154, lng: -71.057655},
+  {lat: 42.320685, lng: -71.052391}, // JFK
+  {lat: 42.275275, lng: -71.029583},
+  {lat: 42.2665139, lng: -71.0203369},
+  {lat: 42.251809, lng: -71.005409},
+  {lat: 42.233391, lng: -71.007153},
+  {lat: 42.2078543, lng: -71.0011385}
+];
+
+var line_a = [
+  {lat: 42.320685, lng: -71.052391},
+  {lat: 42.31129, lng: -71.053331},
+  {lat: 42.300093, lng: -71.061667},
+  {lat: 42.29312583, lng: -71.06573796000001},
+  {lat: 42.284652, lng: -71.06448899999999}
+]
+
 var features = [
   {
-    position: new google.maps.LatLng(42.352271, -71.05524200000001),
+    position: new google.maps.LatLng(line_b[9]),
     title: "South Station"
   }, {
-    position: new google.maps.LatLng(42.330154, -71.057655),
+    position: new google.maps.LatLng(line_b[11]),
     title: "Andrew"
   }, {
-    position: new google.maps.LatLng(42.3884, -71.11914899999999),
+    position: new google.maps.LatLng(line_b[2]),
     title: "Porter Square"
   }, {
-    position: new google.maps.LatLng(42.373362, -71.118956),
+    position: new google.maps.LatLng(line_b[3]),
     title: "Harvard Square"       
   }, {
-    position: new google.maps.LatLng(42.320685, -71.052391),
+    position: new google.maps.LatLng(line_a[12]),
     title: "JFK/UMass"     
   }, {
-    position: new google.maps.LatLng(42.31129, -71.053331),
+    position: new google.maps.LatLng(line_a[1]),
     title: "Savin Hill"  
   }, {
-    position: new google.maps.LatLng(42.35639457, -71.0624242),
+    position: new google.maps.LatLng(line_b[7]),
     title: "Park Street"
   }, {
-    position: new google.maps.LatLng(42.342622, -71.056967),
+    position: new google.maps.LatLng(line_b[10]),
     title: "Broadway"
   }, {
-    position: new google.maps.LatLng(42.275275, -71.029583),
+    position: new google.maps.LatLng(line_b[13]),
     title: "North Quincy"
   }, {
-    position: new google.maps.LatLng(42.29312583, -71.06573796000001),
+    position: new google.maps.LatLng(line_a[3]),
     title: "Shawmut"
   }, {
-    position: new google.maps.LatLng(42.39674, -71.121815),
+    position: new google.maps.LatLng(line_b[1]),
     title: "Davis"
   }, {
-    position: new google.maps.LatLng(42.395428, -71.142483),
+    position: new google.maps.LatLng(line_b[0]),
     title: "Alewife"
   }, {
-    position: new google.maps.LatLng(42.36249079, -71.08617653),
+    position: new google.maps.LatLng(line_b[5]),
     title: "Kendall/MIT"
   }, {
-    position: new google.maps.LatLng(42.361166, -71.070628),
+    position: new google.maps.LatLng(line_b[6]),
     title: "Charles/MGH"
   }, {
-    position: new google.maps.LatLng(42.355518, -71.060225),
+    position: new google.maps.LatLng(line_b[8]),
     title: "Downtown Crossing"
   }, {
-    position: new google.maps.LatLng(42.251809, -71.005409),
+    position: new google.maps.LatLng(line_b[15]),
     title: "Quincy Center"
   }, {
-    position: new google.maps.LatLng(42.233391, -71.007153),
+    position: new google.maps.LatLng(line_b[16]),
     title: "Quincy Adams"
   }, {
-    position: new google.maps.LatLng(42.284652, -71.06448899999999),
+    position: new google.maps.LatLng(line_a[4]),
     title: "Ashmont"
   }, {
-    position: new google.maps.LatLng(42.2665139, -71.0203369),
+    position: new google.maps.LatLng(line_b[14]),
     title: "Wollaston"
   }, {
-    position: new google.maps.LatLng(42.300093, -71.061667),
+    position: new google.maps.LatLng(line_a[2]),
     title: "Fields Corner"
   }, {
-    position: new google.maps.LatLng(42.365486, -71.103802),
+    position: new google.maps.LatLng(line_b[4]),
     title: "Central Square"
   }, {
-    position: new google.maps.LatLng(42.2078543, -71.0011385),
+    position: new google.maps.LatLng(line_b[17]),
     title: "Braintree"
   }
 ];
