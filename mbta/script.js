@@ -1,9 +1,5 @@
 var myLat = 0;
 var myLng = 0;
-
-var davisLat = 42.39674;
-var davisLng = -71.121815;
-
 var request = new XMLHttpRequest();
 var me = new google.maps.LatLng(myLat, myLng);
 var myOptions = {
@@ -18,15 +14,11 @@ var infowindow = new google.maps.InfoWindow();
 function init()
 {
   map = new google.maps.Map(document.getElementById("map"), myOptions);
-  getMyLocation();
-}
-
-function getMyLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       myLat = position.coords.latitude;
       myLng = position.coords.longitude;
-      renderMap();
+      render_map();
     });
   }
   else {
@@ -34,24 +26,16 @@ function getMyLocation() {
   }
 }
 
-function renderMap()
+function render_map()
 {
   me = new google.maps.LatLng(myLat, myLng);
-  davis = new google.maps.LatLng(davisLat, davisLng);
   // Update map and go there...
   map.panTo(me);
   info_icon = 'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png'
 
-  // Create a marker
-  my_mark = new google.maps.Marker({
-    position: me,
-    title: "This is me!"
-  });
-  my_mark.setMap(map);
-  info_window(my_mark);
-
+  // add all station markers
   for (var i = 0, feature; feature = features[i]; i++) {
-    addMarker(feature);
+    add_marker(feature);
   }
 
   var path_b = new google.maps.Polyline({
@@ -72,17 +56,19 @@ function renderMap()
   });
   path_a.setMap(map);
 
+  closest(me, features);
 }
 
+// Open info window on click of marker
 function info_window(marker) {
-  // Open info window on click of marker
   google.maps.event.addListener(marker, 'click', function() {
     infowindow.setContent(marker.title);
     infowindow.open(map, marker);
   });
 }
 
-function addMarker(feature) {
+// add a single marker to the map
+function add_marker(feature) {
   var marker = new google.maps.Marker({
     position: feature.position,
     icon: info_icon,
@@ -92,6 +78,64 @@ function addMarker(feature) {
   marker.setMap(map);
   info_window(marker);
 }
+
+function closest(me, features){
+  var close;
+  var dist = calc_dist(me, features[0]);
+  for (var i = 1, feature; feature = features[i]; i++) {
+    d = calc_dist(me, feature);
+    if (d < dist) {
+      dist = d;
+      close = feature;
+    }
+  }
+
+  var line = [
+    {lat: me.lat(), lng: me.lng()}, 
+    {lat: close.position.lat(), lng: close.position.lng()}
+  ];
+  var path = new google.maps.Polyline({
+  path: line,
+  geodesic: true,
+  strokeColor: '#0000FF',
+  strokeOpacity: 1.0,
+  strokeWeight: 2
+  });
+  path.setMap(map);
+
+  // Create a marker
+  var marker = new google.maps.Marker({
+    position: me
+  });
+  marker.setMap(map);
+  dist = Math.round(dist * 100)/100;
+  string_arr = ["Closest station: ",
+                close.title,
+                ". Distance to you: ",
+                dist,
+                " miles."];
+  var content = string_arr.join('');
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+  });
+}
+
+function calc_dist(me, feature){
+  var R = 3959; // Earth’s mean radius in miles
+  var d_lat = rad(feature.position.lat() - me.lat());
+  var d_long = rad(feature.position.lng() - me.lng());
+  var a = Math.sin(d_lat / 2) * Math.sin(d_lat / 2) +
+    Math.cos(rad(me.lat())) * Math.cos(rad(feature.position.lat())) *
+    Math.sin(d_long / 2) * Math.sin(d_long / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d; // returns the distance in miles
+}
+
+var rad = function(x) {
+  return x * Math.PI / 180;
+};
 
 var line_b = [
   {lat: 42.395428, lng: -71.142483},
@@ -122,6 +166,7 @@ var line_a = [
   {lat: 42.284652, lng: -71.06448899999999}
 ]
 
+// list of locations and names of red line stations
 var features = [
   {
     position: new google.maps.LatLng(line_b[9]),
