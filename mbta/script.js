@@ -67,10 +67,10 @@ function render_map()
 // Open info window on click of marker
 function info_window(marker) {
   google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent(marker.title);
+    curr_stop = marker.title;
+    infowindow.setContent("<p>" + marker.title + "<br />" + "Train info not loaded, click again" + "</p>");
     infowindow.open(map, marker);
     loadJSON();
-    curr_stop = marker.title;
   });
 }
 
@@ -156,12 +156,40 @@ function parseJSON() {
   if (request.readyState == 4 && request.status == 200) {
     data = request.responseText;
     trainInfo = JSON.parse(data);
+    var arr_ale = [];
+    var arr_ash = [];
+    var arr_bra = [];
+    var dest;
     for (var i = 0, trip; trip = trainInfo["TripList"]["Trips"][i]; i++) {
-      console.log(trip["Predictions"]);
+      var dest = trip['Destination'];
+      for (var j = 0, predict; predict = trip["Predictions"][j]; j++) {
+        if (predict["Stop"] == curr_stop) {
+          if (dest == "Alewife") {
+            arr_ale.push(predict["Seconds"]);
+          }
+          if (dest == "Ashmont") {
+            arr_ash.push(predict["Seconds"]);
+          }
+          if (dest == "Braintree") {
+            arr_bra.push(predict["Seconds"]);
+          }
+        }
+      }
     }
+
+    arr_ale.sort(compareNumbers);
+    arr_ash.sort(compareNumbers);
+    arr_bra.sort(compareNumbers);
+    var train_ale = arr_ale.join(' seconds<br />');
+    var train_ash = arr_ash.join(' seconds<br />');
+    var train_bra = arr_bra.join(' seconds<br />');
+    infowindow.setContent("<p>" + curr_stop + "<br />" + "Next trains to Alewife: " + "<br />" + train_ale + " seconds" + "</p>");
   }
 }
 
+function compareNumbers(a, b) {
+  return a - b;
+}
 
 var rad = function(x) {
   return x * Math.PI / 180;
