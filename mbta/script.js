@@ -10,6 +10,8 @@ var myOptions = {
 var map;
 var marker;
 var infowindow = new google.maps.InfoWindow();
+var trainInfo;
+var curr_stop;
 
 function init()
 {
@@ -31,7 +33,10 @@ function render_map()
   me = new google.maps.LatLng(myLat, myLng);
   // Update map and go there...
   map.panTo(me);
-  info_icon = 'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png'
+  rail_icon = {
+    url: 'https://maps.google.com/mapfiles/kml/shapes/rail.png',
+    scaledSize: new google.maps.Size(25, 25)
+  };
 
   // add all station markers
   for (var i = 0, feature; feature = features[i]; i++) {
@@ -64,6 +69,8 @@ function info_window(marker) {
   google.maps.event.addListener(marker, 'click', function() {
     infowindow.setContent(marker.title);
     infowindow.open(map, marker);
+    loadJSON();
+    curr_stop = marker.title;
   });
 }
 
@@ -71,7 +78,7 @@ function info_window(marker) {
 function add_marker(feature) {
   var marker = new google.maps.Marker({
     position: feature.position,
-    icon: info_icon,
+    icon: rail_icon,
     map: map,
     title: feature.title
   });
@@ -132,6 +139,29 @@ function calc_dist(me, feature){
   var d = R * c;
   return d; // returns the distance in miles
 }
+
+function loadJSON() {
+  // Step 1: create an instance of XMLHttpRequest
+  request = new XMLHttpRequest();
+  // Step 2: Make request to remote resource
+  request.open("get", "https://rocky-taiga-26352.herokuapp.com/redline.json", true);
+  // Step 3: Create handler function to do something with data in response
+  request.onreadystatechange = parseJSON;
+  // Step 4: Send the request
+  request.send();
+}
+
+function parseJSON() {
+  console.log("readyState: ", request.readyState, "status: ", request.status);
+  if (request.readyState == 4 && request.status == 200) {
+    data = request.responseText;
+    trainInfo = JSON.parse(data);
+    for (var i = 0, trip; trip = trainInfo["TripList"]["Trips"][i]; i++) {
+      console.log(trip["Predictions"]);
+    }
+  }
+}
+
 
 var rad = function(x) {
   return x * Math.PI / 180;
