@@ -112,19 +112,20 @@ function closest(me, features){
 
   // Create a marker
   var marker = new google.maps.Marker({
-    position: me
+    position: me,
+    animation: google.maps.Animation.DROP
   });
   marker.setMap(map);
   dist = Math.round(dist * 100)/100;
-  string_arr = ["Closest station: ",
-                close.title,
-                ". Distance to you: ",
-                dist,
-                " miles."];
-  var content = string_arr.join('');
   google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent(content);
+    infowindow.setContent("<p>" + "<b>" + "This is YOU!" + "</b>" + "<br />" + 
+      "Closet station: " + close.title + "<br />" + "Distance to you: " + dist + " miles." + "</p>");
     infowindow.open(map, marker);
+    if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
   });
 }
 
