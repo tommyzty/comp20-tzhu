@@ -12,9 +12,16 @@
             $('#msg').keypress(function(e){
                 var key = e.which;
                 if (key == 13) {
+                    // get input text
                     var text = $('input:text').val();
+                    // get the current time
                     var now = new Date(Date.now());
                     var date = now.getDate();
+                    var year = now.getFullYear();
+                    var hour = now.getHours();
+                    var min = now.getMinutes();
+                    var month = now.getMonth();
+                    var sec = now.getSeconds();
                     var day = now.getDay();
                     if (day == 0) {
                         day = "Sun";
@@ -31,12 +38,8 @@
                     } else if (day == 6) {
                         day = "Sat"
                     } 
-                    var year = now.getFullYear();
-                    var hour = now.getHours();
-                    var min = now.getMinutes();
-                    var month = now.getMonth();
-                    var sec = now.getSeconds();
 
+                    // change log's innerHTML
                     $('#log').append("<p>");
                     $('#log').append(day);
                     $('#log').append(" ");
