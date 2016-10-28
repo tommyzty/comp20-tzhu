@@ -8,10 +8,13 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-        $(function(){
+        $(document).ready(function(){
+            if (localStorage.getItem('log') != null) {
+                $('#log').html(localStorage.getItem('log'));
+            }
             $('#msg').keypress(function(e){
                 var key = e.which;
-                if (key == 13) {
+                if (key == 13 && $('input:text').val() != "") {
                     // get input text
                     var text = $('input:text').val();
                     // get the current time
@@ -39,24 +42,32 @@
                         day = "Sat"
                     } 
 
-                    // change log's innerHTML
-                    $('#log').append("<p>");
-                    $('#log').append(day);
-                    $('#log').append(" ");
-                    $('#log').append(year);
-                    $('#log').append("-");
-                    $('#log').append(month);
-                    $('#log').append("-");
-                    $('#log').append(date);
-                    $('#log').append(" ");
-                    $('#log').append(hour);
-                    $('#log').append(":");
-                    $('#log').append(min);
-                    $('#log').append(":");
-                    $('#log').append(sec);
-                    $('#log').append(" - ");
-                    $('#log').append(text);
-                    $('#log').append("</p>");
+                    var time = "<p>"
+                    time += day;
+                    time += " ";
+                    time += year;
+                    time += "-";
+                    time += month;
+                    time += "-";
+                    time += date;
+                    time += " ";
+                    time += hour;
+                    time += ":";
+                    time += min;
+                    time += ":";
+                    time += sec;
+                    time += " - ";
+                    text += "</p>";
+                    text = time + text;
+
+                    var log = text;
+                    if (localStorage.getItem('log') != null) {
+                        log = localStorage.getItem('log');
+                        log = text + log;
+                    }
+                    localStorage.setItem('log', log);
+
+                    $('#log').html(localStorage.getItem('log'));
                     $('input:text').val("");
                 }
             });
