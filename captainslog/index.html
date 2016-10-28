@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Captain's Log</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $('#msg').keypress(function(e){
+                var key = e.which;
+                if (key == 13) {
+                    var text = $('input:text').val();
+                    var now = new Date(Date.now());
+                    var date = now.getDate();
+                    var day = now.getDay();
+                    if (day == 0) {
+                        day = "Sun";
+                    } else if (day == 1) {
+                        day = "Mon"
+                    } else if (day == 2) {
+                        day = "Tue"
+                    } else if (day == 3) {
+                        day = "Wed"
+                    } else if (day == 4) {
+                        day = "Thu"
+                    } else if (day == 5) {
+                        day = "Fri"
+                    } else if (day == 6) {
+                        day = "Sat"
+                    } 
+                    var year = now.getFullYear();
+                    var hour = now.getHours();
+                    var min = now.getMinutes();
+                    var month = now.getMonth();
+                    var sec = now.getSeconds();
+
+                    $('#log').append("<p>");
+                    $('#log').append(day);
+                    $('#log').append(" ");
+                    $('#log').append(year);
+                    $('#log').append("-");
+                    $('#log').append(month);
+                    $('#log').append("-");
+                    $('#log').append(date);
+                    $('#log').append(" ");
+                    $('#log').append(hour);
+                    $('#log').append(":");
+                    $('#log').append(min);
+                    $('#log').append(":");
+                    $('#log').append(sec);
+                    $('#log').append(" - ");
+                    $('#log').append(text);
+                    $('#log').append("</p>");
+                    $('input:text').val("");
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Captain's Log</h1>
+    <h3>New entry: <input type="text" id="msg" name="msg" size="30" /></h3>
+    <div id="log"></div>
+</body>
+</html>
