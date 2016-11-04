@@ -145,7 +145,7 @@ function loadJSON() {
   // Step 1: create an instance of XMLHttpRequest
   request = new XMLHttpRequest();
   // Step 2: Make request to remote resource
-  request.open("get", "https://rocky-taiga-26352.herokuapp.com/redline.json", true);
+  request.open("get", "https://fast-forest-77151.herokuapp.com/redline.json", true);
   // Step 3: Create handler function to do something with data in response
   request.onreadystatechange = parseJSON;
   // Step 4: Send the request
