@@ -1,0 +1,42 @@
+html {
+	height: 100%;
+	font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
+}
+
+h1 {
+	font-size: 26pt;
+}
+
+h2, h3, h4, h5, h6 {
+	font-size: 18pt;
+}
+
+body {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	font-size: 12pt;
+}
+
+li {
+	font-weight: bold;
+}
+
+a:link {
+	text-decoration: none;
+	color: red;
+}
+
+a:visited {
+	text-decoration: none;
+	color: red;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: brown;
+}
+
+.bold_text {
+	font-weight: bold;
+}
