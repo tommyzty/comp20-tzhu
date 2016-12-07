@@ -44,12 +44,13 @@
 					app.use(ddos.express);<br />
 					</p>
 				<li>Null Value Insertion Bug</li>
-					<p>This is technically not a security issue, but it is a bug that affects the functionality of the app. In the submit.json method, I believe your intention was to check to make sure that all the parameters in the request body are non null, but the if statement in your code was "if (user !== null && score !== null && grid !== null){...", which allows null data to be inserted into the database as long as one of the parameters isn't null. This results in 2 bugs that occur in the scores.json method and on the game center main page. As shown in the following pictures, the game center displays data with null values; and when the username query is absent in the URL, the scores.json method would actually print all the data with null usernames. 
+					<p>This is technically not a security issue, but it is a bug that affects the functionality of the app. In the submit.json method, I believe your intention was to check to make sure that all the parameters in the request body are non null, but the if statement in your code was "if (user !== null && score !== null && grid !== null)...", which fails its purpose and allows null data to be inserted into the database as long as one of the parameters isn't null. This results in 2 bugs that occur in the scores.json method and on the game center main page. As shown in the following pictures, the game center displays data with null values; and when the username query is absent in the URL, the scores.json method would actually print all the data with null usernames. <span class="bold_text">To fix this</span>, simply change the "!==" in the code to "!=". 
 					</p>
 					<img src="bug2.png" alt="bug2" style="width:70%;">
 					<img src="bug1.png" alt="bug1" style="width:70%;">
 			</ol>
 		<h2>Conclusion</h2>
-			<p>Overall, the biggest issue with this app is the Cross-site Scripting vulnerability. In the future, refer to <a href="https://www.owasp.org/index.php/Web_Application_Security_Testing_Cheat_Sheet">this web app security check list</a> before launching your app, make sure you did your best to find and fill the security loop holes. Also, good job on preventing the "$ne" bug on mongodb. Your scores.json GET method is secure. </p>
+			<p>Overall, the biggest issue with this app is the Cross-site Scripting vulnerability. Good job on preventing the "$ne" bug in mongodb where changing the username query in scores.json could reveal all data in the database. In the future, refer to <a href="https://www.owasp.org/index.php/Web_Application_Security_Testing_Cheat_Sheet">this web app security check list</a> before launching your app, make sure you did your best to find and fill the security loop holes. </p>
+			<br />
 	</body>
 </html>	
